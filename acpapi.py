@@ -2,26 +2,30 @@ import requests
 
 url = 'https://acpapi.com/API/'
 labels = {
-            'None': 0,
-            'Ground': 1,
-            'Expedited': 2,
-            'Expedited Max': 4,
-            'Priority': 3,
-        }
-label_formats = ['PNG', 'PDF', 'EPL2', None]
+    'None': 0,
+    'Ground': 1,
+    'Expedited': 2,
+    'Expedited Max': 4,
+    'Priority': 3,
+}
+label_formats = ['PNG', 'PDF', 'EPL2', ]
 
 
-def create_mailing(xml, apikey, test_mode=1, label=0, label_format=None):
+def create_mailing(xml, apikey, test_mode=1, label='None', label_format='PNG'):
 
-    if label in (*labels.keys(), 0):
-        parameters = {
-                        'apikey': apikey,
-                        'command': 'createMailing',
-                        'testMode': test_mode,
-                        'data': xml,
-                        'label': label,
-                        'labelFormat': label_format,
-                    }
+    # If label_format not valid, default to PNG
+    if label_format not in label_formats:
+        label_format = 'PNG'
+    # Options for API create mailing command
+    parameters = {
+        'apikey': apikey,
+        'command': 'createMailing',
+        'testMode': test_mode,
+        'data': xml,
+        # If label selection not valid, default to no label
+        'label': labels.get(label, 'None'),
+        'labelFormat': label_format,
+    }
     r = requests.post(url, parameters)
     return r.content, r.status_code
 
@@ -33,7 +37,8 @@ def delete_mailing(apikey, tracking_number, shipperitemid=None):
                         <trackingNumber>{tracking_number}</trackingNumber>
                         <shipperItemId>{shipperitemid}</shipperItemId>
                     </mailItem>
-                </shippingApiRequest>'''
+                </shippingApiRequest>
+            '''
     parameters = {
         'apikey': apikey,
         'command': 'cancelMailing',
@@ -66,4 +71,5 @@ def create_bag(apikey, tracking_number, bag_id=None, comment=None,
     r = requests.post(url, parameters)
     return r.content, r.status_code
 
-def cancel_bag(apikey, bag_id, shipper_bag_id)
+def cancel_bag(apikey, bag_id, shipper_bag_id):
+    pass
