@@ -15,6 +15,7 @@ shipperItemID.text = shipper_item
 displayItemID = xml.SubElement(mailItem, "displayItemID")
 displayItemID.text = display_item
 
+# Consignee Properties
 consignee = xml.Element("consignee")
 mailItem.append(consignee)
 name = xml.SubElement(consignee, "name")
@@ -36,6 +37,7 @@ consignee_phone.text = con_phone
 consignee_email = xml.SubElement(consignee, "email")
 consignee_email.text = con_email
 
+#Shipper Properties
 shipper = xml.Element("shipper")
 mailItem.append(shipper)
 shipper_name = xml.SubElement(shipper, "name")
@@ -57,6 +59,7 @@ shipper_phone.text = shipper_phone
 shipper_email = xml.SubElement(shipper, "email")
 shipper_email.text = shipper_email
 
+# 
 if return_address:
     return_address = xml.Element("returnAddress")
     mailItem.append(return_address)
@@ -79,6 +82,7 @@ if return_address:
     return_email = xml.SubElement(return_address, "email")
     return_email.text = return_email  
 
+# Parcel properties
 value = xml.Element("value")
 value.text = parcel_value
 mailItem.append(value)
@@ -107,4 +111,28 @@ height.text = parcel_height
 dimensionsUOM = xml.Element("dimensionsUnitOfMeasure")
 dimensionsUOM.text = "m"
 mailItem.append(dimensionsUOM)
+
+# Parcel Content Properties
+product = xml.Element("product")
+mailItem.append(product)
+country_origin = xml.SubElement(product, "countryOfOrigin")
+country_origin.text = parcel_country
+harmonization_code = xml.SubElement(product, "harmonizationCode")
+harmonization_code.text = hscode
+description = xml.SubElement(product, "description")
+description.text = product_description
+manufacture_code = xml.SubElement(product, "manufacturerCode")
+manufacture_code.text = manu_code
+sku_code = xml.SubElement(product, "sku")
+sku_code.text = sku
+quantity = xml.SubElement(product, "quantity")
+quantity.text = item_quantity
+unit_value = xml.SubElement(product, "unitValue")
+unit_value.text = item_value
+total_unit_value = xml.SubElement(product, "value")
+total_unit_value.text = float(item_value) * int(item_quantity)
+unit_weight = xml.SubElement(product, "weight")
+unit_weight.text = item_weight
+product_URL = xml.SubElement(product, "productURL")
+product_URL.text = URL
 
