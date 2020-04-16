@@ -1,4 +1,5 @@
 import requests
+import mailings
 
 url = 'https://acpapi.com/API/'
 labels = {
@@ -11,8 +12,9 @@ labels = {
 label_formats = ['PNG', 'PDF', 'EPL2', ]
 
 
-def create_mailing(xml, apikey, test_mode=1, label='None', label_format='PNG'):
+def create_mailing(csv, apikey, test_mode=1, label='None', label_format='PNG'):
 
+    xml = mailings.convert_csv_to_ACPAPI_format(csv)
     # If label_format not valid, default to PNG
     if label_format not in label_formats:
         label_format = 'PNG'
@@ -71,5 +73,24 @@ def create_bag(apikey, tracking_number, bag_id=None, comment=None,
     r = requests.post(url, parameters)
     return r.content, r.status_code
 
+
 def cancel_bag(apikey, bag_id, shipper_bag_id):
+    xml = f'''<?xml version="1.0" encoding="utf-8" ?>
+                <shippingApiRequest>
+                    <bag>
+                        <bagId>{bag_id}</bagId>
+                        <shipperBagId>{shipper_bag_id}</shipperBagId>
+                    </bag>
+                </shippingApiRequest>'''
+    parameters = {
+        'apikey': apikey,
+        'command': 'cancelBag',
+        'data': xml,
+    }
+    r = requests.post(url, parameters)
+    return r.content, r.status_code
+
+
+def create_manifest(apikey, csv, clearance_type):
+
     pass
