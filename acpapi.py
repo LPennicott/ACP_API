@@ -1,4 +1,5 @@
-import requests
+import requests, sys
+import PySimpleGUI as sg
 import mailings
 
 url = 'https://acpapi.com/API/'
@@ -94,3 +95,13 @@ def cancel_bag(apikey, bag_id, shipper_bag_id):
 def create_manifest(apikey, csv, clearance_type):
 
     pass
+
+
+if __name__ == '__main__':
+    if len(sys.argv) == 1:
+        fname = sg.popup_get_file('Please select consolidation file')
+    else:
+        fname = sys.argv[1]
+
+    test = create_mailing(fname, '8557d4855241ba2d', test_mode=1, label='Ground', label_format='PNG')
+    print(test)

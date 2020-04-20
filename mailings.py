@@ -2,8 +2,8 @@ import xml.etree.ElementTree as xml
 import csv
 
 
-def convert_csv_to_ACPAPI_format(csv):
-    with open(csv, newline='') as f:
+def convert_csv_to_ACPAPI_format(file):
+    with open(file, 'r') as f:
         reader = csv.DictReader(f)
     
         for line in reader:
