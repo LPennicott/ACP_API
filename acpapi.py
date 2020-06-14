@@ -1,4 +1,5 @@
-import requests, sys
+import sys
+import requests
 import PySimpleGUI as sg
 import mailings
 
@@ -52,7 +53,7 @@ def delete_mailing(apikey, tracking_number, shipperitemid=None):
 
 
 def create_bag(apikey, tracking_number, bag_id=None, comment=None,
-    shipper_item_id=None, label=0, label_format='PNG'):
+               shipper_item_id=None, label=0, label_format='PNG'):
     xml = f'''<?xml version="1.0" encoding="utf-8" ?>
                 <shippingApiRequest>
                     <bag>
@@ -103,5 +104,6 @@ if __name__ == '__main__':
     else:
         fname = sys.argv[1]
 
-    test = create_mailing(fname, '8557d4855241ba2d', test_mode=1, label='Ground', label_format='PNG')
+    test = create_mailing(fname, '8557d4855241ba2d',
+                          test_mode=1, label='Ground', label_format='PNG')
     print(test)

@@ -5,24 +5,25 @@ import csv
 def convert_csv_to_ACPAPI_format(file):
     with open(file, 'r') as f:
         reader = csv.DictReader(f)
-    
+
         for line in reader:
             if line['ï»¿trackingNumber'] == 'ï»¿trackingNumber':
                 continue
-    
+
             root = xml.Element("shippingApiRequest")
             mailItem = xml.Element("mailItem")
             root.append(mailItem)
-            # If client uses their own label, they need to provide tracking number.
+            # If client uses their own label,
+            # they need to provide tracking number.
             if line['ï»¿trackingNumber']:
                 trackingNumber = xml.SubElement(mailItem, "trackingNumber")
                 trackingNumber.text = line['ï»¿trackingNumber']
-            
+
             shipperItemID = xml.SubElement(mailItem, "shipperItemId")
             shipperItemID.text = line['shipperItemId']
             displayItemID = xml.SubElement(mailItem, "displayItemId")
             displayItemID.text = line['displayItemId']
-            
+
             # Consignee Properties
             consignee = xml.Element("consignee")
             mailItem.append(consignee)
@@ -46,8 +47,8 @@ def convert_csv_to_ACPAPI_format(file):
             consignee_phone.text = line["consigneePhone"]
             consignee_email = xml.SubElement(consignee, "email")
             consignee_email.text = line["consigneeEmail"]
-            
-            #Shipper Properties
+
+            # Shipper Properties
             shipper = xml.Element("shipper")
             mailItem.append(shipper)
             shipper_name = xml.SubElement(shipper, "name")
@@ -72,8 +73,7 @@ def convert_csv_to_ACPAPI_format(file):
             shipper_email.text = line["shipperEmail"]
             shipper_URL = xml.SubElement(shipper, "shipperURL")
             shipper_URL.text = line["shipperURL"]
-            
-            # 
+
             # if return_address:
             #     return_address = xml.Element("returnAddress")
             #     mailItem.append(return_address)
@@ -94,25 +94,25 @@ def convert_csv_to_ACPAPI_format(file):
             #     return_phone = xml.SubElement(return_address, "phone")
             #     return_phone.text = return_phone
             #     return_email = xml.SubElement(return_address, "email")
-            #     return_email.text = return_email  
-            
+            #     return_email.text = return_email
+
             # Parcel properties
             value = xml.Element("value")
             value.text = line["value"]
             mailItem.append(value)
-            
+
             currency = xml.Element("currency")
             currency.text = line["currency"]
             mailItem.append(currency)
-            
+
             weight = xml.Element("weight")
             weight.text = line["weight"]
             mailItem.append(weight)
-            
+
             weightUOM = xml.Element("weightUnitOfMeasure")
             weightUOM.text = "kg"
             mailItem.append(weightUOM)
-            
+
             dimension = xml.Element("dimensions")
             mailItem.append(dimension)
             parcel_length = xml.SubElement(dimension, "length")
@@ -121,11 +121,11 @@ def convert_csv_to_ACPAPI_format(file):
             width.text = line["dimensionsWidth"]
             height = xml.SubElement(dimension, "height")
             height.text = line["dimensionsHeight"]
-            
+
             dimensionsUOM = xml.Element("dimensionsUnitOfMeasure")
             dimensionsUOM.text = "m"
             mailItem.append(dimensionsUOM)
-            
+
             # Parcel Content Properties
             product = xml.Element("product")
             mailItem.append(product)
@@ -152,11 +152,5 @@ def convert_csv_to_ACPAPI_format(file):
             PNFN = xml.Element("priorNoticeFilingNumber")
             PNFN.text = ""
             mailItem.append(PNFN)
-    
+
             return xml.tostring(root, encoding='utf8').decode('utf8')
-    
-            # print(acpapi.create_mailing(tree, '8557d4855241ba2d'))
-            # with open('test.xml', 'w') as f:
-            #     f.write(tree)
-    
-    
